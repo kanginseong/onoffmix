@@ -1,9 +1,9 @@
-
 from logging import fatal
 import os
 import pymysql
 import json
 import datetime
+import bcrypt
 from flask import request
 from flask_restx import Resource, Api, Namespace
 
@@ -17,10 +17,6 @@ def setDB():
                     charset='utf8',
                     cursorclass=pymysql.cursors.DictCursor)
     return db
-
-# sql = f'insert into User values(${user_name}, ${user_mail}, ${user_pw});'
-
-# print(sql)
 
 createUser = Namespace(
     name='createUser',
@@ -38,16 +34,15 @@ class CreateUser(Resource):
         user_mail = data['user_mail']
         user_pw = data['user_pw']
 
-        # id 체크
+        # name 체크
         base = db.cursor()
         sql = f'select user_name from User\
                 where user_name = "{user_name}";'
         base.execute(sql)
-        id = base.fetchall()
-        print(id)
-        if id:
+        name = base.fetchall()
+        if name:
             base.close()
-            return {'id': False}
+            return {'name': False}
         else:
             # mail 체크
             base = db.cursor()
@@ -59,10 +54,12 @@ class CreateUser(Resource):
                 base.close()
                 return {'mail': False}
 
-        
+        user_bcrypt = bcrypt.hashpw(user_pw.encode(
+            'utf-8'), bcrypt.gensalt()).decode('utf-8')
+
         base = db.cursor()
         sql = f'insert into User(user_name, user_mail, user_pw)\
-                values("{user_name}", "{user_mail}", "{user_pw}");'
+                values("{user_name}", "{user_mail}", "{user_bcrypt}");'
         base.execute(sql)
         db.commit()
         base.close()
