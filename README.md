@@ -1,7 +1,10 @@
 onoffmix task
 
 ## DB
-DB design   []
+DB design       [O]
 
 ## API
-createUser  []
+createUser      [O]
+seeMeet         [O]
+seeMeetDetail   [ ]
+inMeet          [ ]
