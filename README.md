@@ -1,24 +1,24 @@
-onoffmix task
+# onoffmix task
 
 ## DB
-DB design       [O]
+#### DB design       [O]
 
 ## API
-createUser      [O]
-login           [O]
+#### createUser      [O]
+#### login           [O]
 
-seeMeet         [O]
-seeMeetDetail   [O]
-seeView         [O]
+#### seeMeet         [O]
+#### seeMeetDetail   [O]
+#### seeView         [O]
 
-inMeet          [O]
-inMeetCheck     [ ]
+#### inMeet          [O]
+#### inMeetCheck     [ ]
 
-createMeet      [ ]
-updateMeet      [ ]
-createGroup     [ ]
-updategroup     [ ]
+#### createMeet      [ ]
+#### updateMeet      [ ]
+#### createGroup     [ ]
+#### updategroup     [ ]
 
-seePartList     [ ]
-deletePart      [ ]
+#### seePartList     [ ]
+#### deletePart      [ ]
 
