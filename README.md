@@ -4,7 +4,7 @@ onoffmix task
 DB design       [O]
 
 ## API
-createUser      [O]
+# createUser      [O]
 login           [O]
 
 seeMeet         [O]
