@@ -1,13 +1,13 @@
 from flask import Flask
 from flask_restx import Resource, Api
 
-from createUser import createUser
-from login import login
+from User.createUser import createUser
+from User.login import login
 
-from seeMeet import seeMeet
-from seeView import seeView
+from Meet.seeMeet import seeMeet
+from Meet.seeView import seeView
 
-from inMeet import inMeet
+from Meet.inMeet import inMeet
 
 app = Flask(__name__) # Flask 앱 생성
 api = Api(app) # API 서버로 사용할 수 있게해줌.

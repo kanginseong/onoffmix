@@ -57,10 +57,10 @@ class seeMeetDetail(Resource):
 
         db = setDB()
 
-        sql = f'select meet_no, meet_title, meet_created, meet_view, ( \
-                    select count(user_no) as c from FormUser \
-                    where meet_no = {meet_no} \
-                    group by meet_no) as meet_member \
+        sql = f'select meet_no, meet_title, meet_created, meet_view, \
+                    (select count(user_no) as c from FormUser \
+                     where meet_no = {meet_no} \
+                     group by meet_no) as meet_member \
                 from Meet \
                 where meet_no = {meet_no};'
 
