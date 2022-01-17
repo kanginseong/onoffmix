@@ -28,14 +28,15 @@ class SeeMeet(Resource):
 
         db = setDB()
 
-        sql = f'select m.*, u.member \
-	            from Meet as m \
-	            join (select meet_no, count(user_no) as member \
-			          from MeetUser\
-			          group by meet_no) as u \
-	            on m.meet_no = u.meet_no\
-	            group by m.meet_no, u.member \
-	            order by u.member desc, m.meet_view desc, m.meet_created desc;'
+        # join = 모임에 신청자 수
+        # where = 모집 기간이 지나기 전까지의 행사만
+        # order by = 신청자 수 -> 상세 페이지 뷰 카운트 -> 최신 글 순서대로 정렬
+        sql = f'select m.*, u.member from Meet as m \
+                join (select meet_no, count(user_no) as member from MeetUser group by meet_no) as u \
+                on m.meet_no = u.meet_no \
+                where date(m.meet_recruit) > date(now())\
+                group by m.meet_no, u.member\
+                order by u.member desc, m.meet_view desc, m.meet_created desc;' 
 
         base = db.cursor()
         base.execute(sql)
