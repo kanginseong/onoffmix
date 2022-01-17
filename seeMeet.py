@@ -31,25 +31,23 @@ class SeeMeet(Resource):
         # join = 모임에 신청자 수
         # where = 모집 기간이 지나기 전까지의 행사만
         # order by = 신청자 수 -> 상세 페이지 뷰 카운트 -> 최신 글 순서대로 정렬
-        sql = f'select m.*, u.member from Meet as m \
-                join (select meet_no, count(user_no) as member from MeetUser group by meet_no) as u \
-                on m.meet_no = u.meet_no \
-                where date(m.meet_recruit) > date(now())\
-                group by m.meet_no, u.member\
+        sql = f'select m.meet_no, m.meet_title, m.meet_created, m.meet_content, m.meet_view, f.form_no, form_title, u.member from Form as f \
+                inner join (select form_no, count(user_no) as member from FormUser group by form_no) as u \
+                on f.form_no = u.form_no \
+                join Meet as m \
+                on f.meet_no = m.meet_no \
+                where date(f.form_meet_end) > date(now()) \
+                group by f.form_no, u.member \
                 order by u.member desc, m.meet_view desc, m.meet_created desc;' 
 
         base = db.cursor()
         base.execute(sql)
         data = base.fetchall()
         base.close()
-
-        if data:
-            print(data)
     
         for i in data:
-            i['meet_recruit'] = str(i['meet_recruit'])
             i['meet_created'] = str(i['meet_created'])
-            i['meet_updated'] = str(i['meet_updated'])
+
         return { "List" : data}
     
 @seeMeet.route('/detail/<string:meet_no>')
@@ -59,8 +57,8 @@ class seeMeetDetail(Resource):
 
         db = setDB()
 
-        sql = f'select meet_no, meet_title, meet_total, meet_recruit, ( \
-                    select count(user_no) as c from MeetUser \
+        sql = f'select meet_no, meet_title, meet_created, meet_view, ( \
+                    select count(user_no) as c from FormUser \
                     where meet_no = {meet_no} \
                     group by meet_no) as meet_member \
                 from Meet \
@@ -68,10 +66,10 @@ class seeMeetDetail(Resource):
 
         base = db.cursor()
         base.execute(sql)
-        data = base.fetchall()
+        meet = base.fetchall()
         base.close()
 
-        sql = f'select f.* from Meet as m join Form as f \
+        sql = f'select f.* from Meet as m right join Form as f \
                 on m.meet_no = f.meet_no \
                 where m.meet_no = {meet_no};'
 
@@ -80,13 +78,15 @@ class seeMeetDetail(Resource):
         form = base.fetchall()
         base.close()
 
-        for i in data:
-            i['meet_recruit'] = str(i['meet_recruit'])
-            
+        for i in meet:
+            i['meet_created'] = str(i['meet_created'])
+
         for i in form:
-            i['form_start'] = str(i['form_start'])
-            i['form_end'] = str(i['form_end'])
+            i['form_meet_start'] = str(i['form_meet_start'])
+            i['form_meet_end'] = str(i['form_meet_end'])
+            i['form_apply_start'] = str(i['form_apply_start'])
+            i['form_apply_end'] = str(i['form_apply_end'])
             i['form_created'] = str(i['form_created'])
             i['form_updated'] = str(i['form_updated'])
 
-        return {"Meet" : data[0], "Form" : form}
+        return {"Meet" : meet[0], "Form" : form}

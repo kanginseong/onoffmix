@@ -31,9 +31,9 @@ class CreateUser(Resource):
 
         data = request.get_json()
         user_name = data['user_name']
-        user_mail = data['user_mail']
         user_pw = data['user_pw']
-
+        user_mail = data['user_mail']
+        
         # name 체크
         base = db.cursor()
         sql = f'select user_name from User\
@@ -58,8 +58,8 @@ class CreateUser(Resource):
             'utf-8'), bcrypt.gensalt()).decode('utf-8')
 
         base = db.cursor()
-        sql = f'insert into User(user_name, user_mail, user_pw)\
-                values("{user_name}", "{user_mail}", "{user_bcrypt}");'
+        sql = f'insert into User(user_name, user_pw, user_mail)\
+                values("{user_name}", "{user_bcrypt}", "{user_mail}");'
         base.execute(sql)
         db.commit()
         base.close()
