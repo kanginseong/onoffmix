@@ -6,5 +6,6 @@ DB design       [O]
 ## API
 createUser      [O]
 seeMeet         [O]
-seeMeetDetail   [ ]
+seeMeetDetail   [O]
+seeView         [O]
 inMeet          [ ]
