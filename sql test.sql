@@ -6,60 +6,60 @@ show tables;
 
 create table User(
 		user_no		  int 		    not null 	auto_increment 	primary key,
-    	user_name 	  varchar(255) 	not null,
-    	user_pw 	  varchar(255) 	not null,
+		user_name 	  varchar(255) 	not null,
+		user_pw 	  varchar(255) 	not null,
 		user_mail     varchar(255)  not null,
-        user_created  datetime      default now(),
-        user_updated  datetime      default now()
+		user_created  datetime      default now(),
+		user_updated  datetime      default now()
 );
 
 create table Meet(
 		meet_no		  int 		    not null 	auto_increment 	primary key,
-    	meet_title 	  varchar(255) 	not null,
-        meet_content  varchar(255) 	not null,
+		meet_title 	  varchar(255) 	not null,
+		meet_content  varchar(255) 	not null,
 		meet_view     int           not null,
 		meet_created  datetime      default now(),
-        meet_updated  datetime      default now(),
+		meet_updated  datetime      default now(),
         
-        user_no	 	  int	      	not null,
+		user_no	 	  int	      	not null,
         
-        foreign key (user_no)
-    	references User(user_no) on update cascade
+		foreign key (user_no)
+		references User(user_no) on update cascade
 );
 
 create table Form(
 		form_no 			int 		    not null auto_increment primary key,
-    	form_title     		varchar(255) 	not null,
-        form_total 	    	int(4) 		    not null,
-        form_admission 		char(1) 		not null,
-        form_meet_start		datetime      	not null,
-        form_meet_end  		datetime      	not null,
-    	form_apply_start 	datetime    	not null,
-    	form_apply_end 	    datetime    	not null,
+		form_title     		varchar(255) 	not null,
+		form_total 	    	int(4) 		    not null,
+		form_admission 		char(1) 		not null,
+		form_meet_start		datetime      	not null,
+		form_meet_end  		datetime      	not null,
+		form_apply_start 	datetime    	not null,
+		form_apply_end 	    datetime    	not null,
 		form_created 		datetime 		default now(),
 		form_updated 		datetime 		default now(),
 			
 		meet_no 	    	int 		    not null,
 
 		foreign key (meet_no)
-    	references Meet(meet_no) on update cascade
+		references Meet(meet_no) on update cascade
 );
 
 create table FormUser(
 		formuser_no 	int 		   	not null	auto_increment 	primary key,
-        meet_no 		int 			not null,
+		meet_no 		int 			not null,
 		form_no 		int 		  	not null,
-    	user_no 		int 		  	not null,
-        user_static		char(1)			not null,
-    	formuser_state 	char(1) 		not null,
+		user_no 		int 		  	not null,
+		user_static		char(1)			not null,
+		formuser_state 	char(1) 		not null,
 		form_reason     varchar(255)  	not null,
 		
-        foreign key (meet_no)
-    	references Meet(meet_no) on update cascade,
-    	foreign key (form_no)
-    	references Form(form_no) on update cascade,
-	   	foreign key (user_no)
-    	references User(user_no) on update cascade
+		foreign key (meet_no)
+		references Meet(meet_no) on update cascade,
+		foreign key (form_no)
+		references Form(form_no) on update cascade,
+		foreign key (user_no)
+		references User(user_no) on update cascade
 );
 
 select * from User;

@@ -12,7 +12,7 @@ def setDB():
     db = pymysql.connect(host='localhost',
                     port=3306,
                     user='root',
-                    passwd='root0000',
+                    passwd='dlstjd12',
                     db='onoffmix',
                     charset='utf8',
                     cursorclass=pymysql.cursors.DictCursor)
@@ -30,10 +30,12 @@ class CreateMeet(Resource):
         db = setDB()
 
         data = request.get_json()
+        
         user_no = data['user_no']
         meet_title = data['meet_title']
         meet_content = data['meet_content']
         
+        # 모임이 만들어지면
         sql = f'insert into Meet(meet_title, meet_content, meet_view, user_no)\
                 values ("{meet_title}", "{meet_content}", 0, {user_no});'
         base = db.cursor()
@@ -41,6 +43,7 @@ class CreateMeet(Resource):
         db.commit()
         base.close()
 
+        # 그 모임의 pk를 불러와
         sql = f'select meet_no from Meet \
                 where user_no = {user_no} and meet_title = "{meet_title}";'
 
@@ -48,13 +51,21 @@ class CreateMeet(Resource):
         base.execute(sql)
         meet = base.fetchall()
         base.close()
-
-        print(meet[0]['meet_no'])
-
+        meet = meet[0]['meet_no']
         
-
-        # group = data[{'form_title', 'form_total', 'form_admission', 'form_meet_start', 'form_meet_end', 'form_apply_start', 'form_apply_end', 'meet_no'}]
-
-        # for i in group:
-        #     sql = f'insert into Form(form_title, form_total, form_admission, form_meet_start, form_meet_end, form_apply_start, form_apply_end, meet_no) \
-        #             values("{group[i][0]}", "{group[i][1]}", "{group[i][2]}", "{group[i][3]}", "{group[i][4]}", "{group[i][5]}", "{group[i][6]}", {meet});'
+        group = data['group']
+        
+        for i in group:
+            i['form_title'] = group['form_title']
+            i['form_total'] = group['form_total']
+            i['form_admission'] = group['form_admission']
+            i['form_meet_start'] = group['form_meet_start']
+            i['form_meet_end'] = group['form_meet_end']
+            i['form_apply_start'] = group['form_apply_start']
+            i['form_apply_end'] = group['form_apply_end']
+            i['meet_no'] = group['meet_no']
+            
+            sql[i] = f'insert into Form(form_title, form_total, form_admission, form_meet_start, form_meet_end, form_apply_start, form_apply_end, meet_no) \
+                        values("{group[i]["form_title"]}", "{group[i]["form_title"]}", "{group[i]["form_title"]}", "{group[i]["form_title"]}", "{group[i]["form_title"]}", "{group[i]["form_title"]}", "{group[i]["form_title"]}", {group[i]["form_title"]});'
+                    
+                        
