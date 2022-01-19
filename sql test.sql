@@ -67,6 +67,11 @@ select * from Meet;
 select * from Form;
 select * from FormUser;
 
+alter table FormUser modify column form_reason varchar(255);
+desc FormUser;
+
+select * from FormUser where form_no = 4;
+
 desc Meet;
 
 -- insert into User(user_name, user_pw, user_mail) values(-- );
@@ -124,12 +129,38 @@ where meet_no = 1;
 -- 조회수
 update Meet set meet_view = (select meet_view) + 1 where meet_no = 1;
 
-drop table FormUser;
-drop table Form;
-drop table Meet;
-drop table User;
+delete from Meet where meet_no = 27;
 
 select form_no from Form 
 where form_no = 1 and form_total >= ( select count(user_no) as c from FormUser
                                             where meet_no = 1
                                             group by meet_no);
+                           
+select * from Meet;
+select * from Form;
+select * from FormUser;
+delete from Meet where meet_no = 34; 
+delete from Form where form_no = 15;                      
+                                            
+-- createMeet
+select meet_title from Meet where meet_title = "{meet_title}";
+                
+insert into Meet(meet_title, meet_content, meet_view, user_no) values ("{meet_title}", "{meet_content}", 0, user_no);
+
+select meet_no from Meet where user_no = user_no and meet_title = "{meet_title}";
+
+-- insert into Form(form_title, form_total, form_admission, form_meet_start, form_meet_end, form_apply_start, form_apply_end, meet_no)
+-- values("{i["form_title"]}", {i["form_total"]}, "{i["form_admission"]}", "{i["form_meet_start"]}", "{i["form_meet_end"]}", "{i["form_apply_start"]}", "{i["form_apply_end"]}", {meet});
+
+select form_no from Form where form_title = "어서오세요 그룹1";
+
+
+-- 참가자 리스트 보여주기
+
+select fu.meet_no, fu.form_no, fu.formuser_state, fu.form_reason, u.user_no, u.user_name, u.user_mail from FormUser as fu  join User as u
+on fu.user_no = u.user_no
+where user_static = 'P' and form_no = 3; 
+
+select * from FormUser where user_no = 1 and user_static="M" ;
+
+select * from FormUser where user_no = 1 and user_static="M";
