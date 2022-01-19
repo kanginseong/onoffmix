@@ -17,17 +17,21 @@ def setDB():
                     cursorclass=pymysql.cursors.DictCursor)
     return db
 
-seeView = Namespace(
-    name='seeView',
-    description='seeView API'
+updateView = Namespace(
+    name='updateView',
+    description='updateView API'
 )
 
-@seeView.route('/<string:meet_no>')
-class SeeView(Resource):
+@updateView.route('')
+class UpdateView(Resource):
 
-    def get(self, meet_no):
+    def put(self):
 
         db = setDB()
+        
+        data = request.get_json()
+
+        meet_no = data['meet_no']
 
         sql = f'update Meet \
                 set meet_view = (select meet_view) + 1 \
@@ -38,4 +42,4 @@ class SeeView(Resource):
         db.commit()
         base.close()
 
-        return { "View" : True }
+        return { "updateView" : True }

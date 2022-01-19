@@ -95,6 +95,6 @@ class CreateMeet(Resource):
                 db.commit()
                 base.close()
 
-            return {'createGroup' : True}
+            return {'createMeet' : True}
 
 

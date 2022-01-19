@@ -89,4 +89,4 @@ class seeMeetDetail(Resource):
             i['form_created'] = str(i['form_created'])
             i['form_updated'] = str(i['form_updated'])
 
-        return {"Meet" : meet[0], "Form" : form}
+        return {"seeMeet" : meet[0], "seeForm" : form}

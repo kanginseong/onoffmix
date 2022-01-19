@@ -9,7 +9,7 @@
 
 ##### seeMeet         [O]
 ##### seeMeetDetail   [O]
-##### seeView         [O]
+##### updateView         [O]
 
 ##### inMeet          [O]
 ##### inMeetCheck     [ ]

@@ -5,11 +5,13 @@ from User.createUser import createUser
 from User.login import login
 
 from Meet.seeMeet import seeMeet
-from Meet.seeView import seeView
+from Meet.updateView import updateView
 
 from Meet.inMeet import inMeet
 from Meet.createMeet import createMeet
 
+from Manage.seeRegiList import seeRegiList
+from Manage.updateRegiList import updateRegiList
 from Manage.seePartList import seePartList
 
 
@@ -20,12 +22,13 @@ api.add_namespace(createUser, '/createuser')
 api.add_namespace(login, '/login')
 
 api.add_namespace(seeMeet, '/seemeet')
-api.add_namespace(seeView, '/seeview')
-
+api.add_namespace(updateView, '/updateview')
 
 api.add_namespace(inMeet, '/inmeet')
 api.add_namespace(createMeet, '/createmeet')
 
+api.add_namespace(seeRegiList, '/seeregilist')
+api.add_namespace(updateRegiList, '/updateregilist')
 api.add_namespace(seePartList, '/seepartlist')
 
 if __name__ == '__main__':
