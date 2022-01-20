@@ -1,10 +1,13 @@
 from logging import fatal
 import os
+from xml.dom.minidom import Identified
 import pymysql
 import json
 import datetime
 import bcrypt
+from flask_jwt_extended import *
 from flask import request
+from flask import jsonify
 from flask_restx import Resource, Api, Namespace
 
 
@@ -34,23 +37,35 @@ class Login(Resource):
         user_pw = data['user_pw']
 
         base = db.cursor()
-        sql = f'select user_name from User\
+        sql = f'select user_no from User\
                 where user_name = "{user_name}";'
         base.execute(sql)
         user = base.fetchall()
-        print(user)
+        base.close()
 
-        if user:
+        base = db.cursor()
+        sql = f'select user_name from User\
+                where user_name = "{user_name}";'
+        base.execute(sql)
+        data = base.fetchall()
+        base.close()
+
+        if data:
             base = db.cursor()
             sql = f'select user_pw\
                     from User\
                     where user_name = "{user_name}"'
             base.execute(sql)
-            user = base.fetchall()
-            for r in user:
+            pw = base.fetchall()
+            for r in pw:
                 user_bcrypt = r['user_pw']
                 PW = bcrypt.checkpw(user_pw.encode(
                     'utf-8'), user_bcrypt.encode('utf-8'))
-                return {'login': PW}
+
+                return jsonify(
+                    token = "Bearer " + create_access_token( 
+                        identity = user,
+						)
+                )
         else:
             return {'login' : False}

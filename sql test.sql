@@ -163,4 +163,10 @@ where user_static = 'P' and form_no = 3;
 
 select * from FormUser where user_no = 1 and user_static="M" ;
 
-select * from FormUser where user_no = 1 and user_static="M";
+select meet_no from FormUser where user_no = 1 and user_static="M" group by meet_no;
+
+select form_no from FormUser where meet_no = 35 and user_static="M" group by form_no;
+
+select fu.meet_no, fu.form_no, fu.formuser_state, fu.form_reason, u.user_name from FormUser as fu join User as u on fu.user_no = u.user_no where form_no = 16 and user_static= "P";
+
+select * from FormUser as fu join Form as f on fu.form_no = f.form_no where fu.form_no = 16;

@@ -6,6 +6,8 @@ import datetime
 from flask import request
 from flask_restx import Resource, Api, Namespace
 
+import getUser
+
 
 def setDB():
     db = pymysql.connect(host='localhost',
@@ -23,10 +25,12 @@ updateRegiList = Namespace(
 )
 
 # 방장
-@updateRegiList.route('/<string:user_no>')
+@updateRegiList.route('')
 class UpdateRegiList(Resource):
 
-    def put(self, user_no):
+    def put(self):
+
+        user_no = getUser.whoami()
 
         db = setDB()
         

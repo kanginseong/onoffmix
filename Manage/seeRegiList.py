@@ -3,9 +3,11 @@ import os
 import pymysql
 import json
 import datetime
+from flask_jwt_extended import *
 from flask import request
 from flask_restx import Resource, Api, Namespace
 
+import getUser
 
 def setDB():
     db = pymysql.connect(host='localhost',
@@ -30,9 +32,11 @@ seeRegiList = Namespace(
 
 # 해당 그룹에서 참가자 확인
 
-@seeRegiList.route('/meet/<string:user_no>')
+@seeRegiList.route('/meet')
 class SeeRegiList(Resource):
-    def get(self, user_no):
+    def get(self):
+        
+        user_no = getUser.whoami()
 
         db = setDB()
 

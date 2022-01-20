@@ -3,8 +3,11 @@ import os
 import pymysql
 import json
 import datetime
+from flask_jwt_extended import *
 from flask import request
 from flask_restx import Resource, Api, Namespace
+
+import getUser
 
 
 def setDB():
@@ -22,9 +25,11 @@ seePartList = Namespace(
     description='seePartList API'
 )
 
-@seePartList.route('/<string:user_no>')
+@seePartList.route('')
 class SeePartList(Resource):
-    def get(self, user_no):
+    def get(self):
+        
+        user_no = getUser.whoami()
 
         db = setDB()
 

@@ -1,5 +1,7 @@
+from distutils.debug import DEBUG
 from flask import Flask
 from flask_restx import Resource, Api
+from flask_jwt_extended import *
 
 from User.createUser import createUser
 from User.login import login
@@ -14,8 +16,15 @@ from Manage.seeRegiList import seeRegiList
 from Manage.updateRegiList import updateRegiList
 from Manage.seePartList import seePartList
 
-
 app = Flask(__name__) # Flask 앱 생성
+
+app.config.update(
+    DEBUG = True,
+    JWT_SECRET_KEY = "I'M IML"
+)
+
+jwt = JWTManager(app)
+
 api = Api(app) # API 서버로 사용할 수 있게해줌.
 
 api.add_namespace(createUser, '/createuser')

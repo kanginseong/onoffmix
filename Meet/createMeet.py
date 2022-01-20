@@ -7,6 +7,7 @@ import bcrypt
 from flask import request
 from flask_restx import Resource, Api, Namespace
 
+import getUser
 
 def setDB():
     db = pymysql.connect(host='localhost',
@@ -26,16 +27,16 @@ createMeet = Namespace(
 @createMeet.route('')
 class CreateMeet(Resource):
     def post(self):
+        
+        user_no = getUser.whoami()
 
         db = setDB()
 
         data = request.get_json()
         
-        user_no = data['user_no']
         meet_title = data['meet_title']
         meet_content = data['meet_content']
         
-
         sql = f'select meet_title from Meet\
                 where meet_title = "{meet_title}";'
         base = db.cursor()
@@ -66,7 +67,6 @@ class CreateMeet(Resource):
             meet = meet[0]['meet_no']
             
             group = data['group']
-            # sqll = [] 
 
             for i in group:            
                 sqll = f'insert into Form(form_title, form_total, form_admission, form_meet_start, form_meet_end, form_apply_start, form_apply_end, meet_no) \

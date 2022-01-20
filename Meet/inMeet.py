@@ -7,6 +7,7 @@ import bcrypt
 from flask import request
 from flask_restx import Resource, Api, Namespace
 
+import getUser
 
 def setDB():
     db = pymysql.connect(host='localhost',
@@ -27,15 +28,16 @@ inMeet = Namespace(
 class InMeet(Resource):
     def post(self):
 
+        user_no = getUser.whoami()
+
         db = setDB()
 
         data = request.get_json()
         meet_no = data['meet_no']
         form_no = data['form_no']
-        user_no = data['user_no']
         meet_reason = data['meet_reason']
 
-        # 이미 들어간 방인지 확인
+        # 이미 들어간 모임인지 확인
         
         sql = f'select user_no from FormUser\
             where meet_no = {meet_no} and user_no = {user_no};'
@@ -100,38 +102,3 @@ class InMeet(Resource):
                             base.close()
 
                             return {'inMeet': "S"}
-
-
-@inMeet.route('/changeState/<string:user_name>')
-class InMeetCheck(Resource):
-    def post(self):
-
-        db = setDB()
-
-        data = request.get_json()
-        meet_no = data['meet_no']
-        user_no = data['user_no']
-        formuser_state = data['formuser_state']
-
-        # 방장인지 확인
-        sql = f'select user_static from Room_user\
-                where meet_no = {meet_no} and user_no = {user_no};'
-
-        base = db.cursor()
-        base.execute(sql)
-        check = base.fetchall()
-        base.close()
-
-        # 바꿔야 하는 유저의 정보는 어떻게 가져올것인가
-        if check:
-            if check[0]['user_static'] == "M":
-                sql = f'update FormUser set formuser_state = "{formuser_state}" \
-                        where meet_no = {meet_no};'
-                base = db.cursor()
-                base.execute(sql)
-                db.commit()
-                base.close()
-                return {"changeState" : True}
-
-            else:
-                return {"changeState" : False}
