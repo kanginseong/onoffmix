@@ -15,11 +15,14 @@ def setDB():
 
 @jwt_required()
 def whoami():
+    
+    try:
+        cur_user = get_jwt_identity()
+        user = cur_user[0]['user_no']
 
-    cur_user = get_jwt_identity()
-    user = cur_user[0]['user_no']
-
-    if user:
-        return user
-    else:
-        return {"getUser" : "doesn't matching"}
+        if user:
+            return user
+        else:
+            return None
+    except:
+        return None

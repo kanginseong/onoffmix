@@ -14,6 +14,7 @@ from Meet.createMeet import createMeet
 
 from Manage.seeRegiList import seeRegiList
 from Manage.updateRegiList import updateRegiList
+from Manage.deletePartList import deletePartList
 from Manage.seePartList import seePartList
 
 app = Flask(__name__) # Flask 앱 생성
@@ -39,6 +40,7 @@ api.add_namespace(createMeet, '/createmeet')
 api.add_namespace(seeRegiList, '/seeregilist')
 api.add_namespace(updateRegiList, '/updateregilist')
 api.add_namespace(seePartList, '/seepartlist')
+api.add_namespace(deletePartList, '/deletepartlist')
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)
