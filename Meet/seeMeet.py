@@ -32,12 +32,12 @@ class SeeMeet(Resource):
         # where = 모집 기간이 지나기 전까지의 행사만
         # order by = 신청자 수 -> 상세 페이지 뷰 카운트 -> 최신 글 순서대로 정렬
         sql = f'select m.meet_no, m.meet_title, m.meet_created, m.meet_content, m.meet_view, f.form_no, form_title, u.member from Form as f \
-                inner join (select form_no, count(user_no) as member from FormUser group by form_no) as u \
+                inner join (select form_no, count(user_no) as member from FormUser group by meet_no) as u \
                 on f.form_no = u.form_no \
                 join Meet as m \
                 on f.meet_no = m.meet_no \
                 where date(f.form_meet_end) > date(now()) \
-                group by f.form_no, u.member \
+                group by m.meet_no \
                 order by u.member desc, m.meet_view desc, m.meet_created desc;' 
 
         base = db.cursor()
@@ -57,29 +57,15 @@ class seeMeetDetail(Resource):
 
         db = setDB()
 
-        sql = f'select meet_no, meet_title, meet_created, meet_view, \
-                    (select count(user_no) as c from FormUser \
-                     where meet_no = {meet_no} \
-                     group by meet_no) as meet_member \
-                from Meet \
-                where meet_no = {meet_no};'
-
-        base = db.cursor()
-        base.execute(sql)
-        meet = base.fetchall()
-        base.close()
-
-        sql = f'select f.* from Meet as m right join Form as f \
-                on m.meet_no = f.meet_no \
-                where m.meet_no = {meet_no};'
+        sql = f'select f.* , (select count(user_no) group by fu.form_no) as mem \
+                from FormUser as fu right join Form as f on fu.form_no = f.form_no \
+                where fu.meet_no = {meet_no}\
+                group by form_no;'
 
         base = db.cursor()
         base.execute(sql)
         form = base.fetchall()
         base.close()
-
-        for i in meet:
-            i['meet_created'] = str(i['meet_created'])
 
         for i in form:
             i['form_meet_start'] = str(i['form_meet_start'])
@@ -88,5 +74,6 @@ class seeMeetDetail(Resource):
             i['form_apply_end'] = str(i['form_apply_end'])
             i['form_created'] = str(i['form_created'])
             i['form_updated'] = str(i['form_updated'])
+            
 
-        return {"seeMeet" : meet[0], "seeForm" : form}
+        return {"seeForm" : form}

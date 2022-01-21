@@ -35,7 +35,7 @@ class InMeet(Resource):
         data = request.get_json()
         meet_no = data['meet_no']
         form_no = data['form_no']
-        meet_reason = data['meet_reason']
+        form_reason = data['form_reason']
 
         # 이미 들어간 모임인지 확인
         
@@ -81,7 +81,7 @@ class InMeet(Resource):
                         ## 개설자 - 개설자한테 승인을 받아야함
                         if i['form_admission'] == "G":
                             sql = f'insert into FormUser(meet_no, form_no, user_no, user_static, formuser_state, form_reason)\
-                                    values ({meet_no}, {form_no}, {user_no}, "P", "N", "{meet_reason}");'
+                                    values ({meet_no}, {form_no}, {user_no}, "P", "N", "{form_reason}");'
 
                             base = db.cursor()
                             base.execute(sql)
@@ -94,7 +94,7 @@ class InMeet(Resource):
                         ## 선착순 - 참여 인원 보고 가능하면 바로 Y
                         elif i['form_admission'] == "S":
                             sql = f'insert into FormUser(meet_no, form_no, user_no, user_static, formuser_state, form_reason)\
-                                    values ({meet_no}, {form_no}, {user_no}, "P", "Y", "{meet_reason}");'
+                                    values ({meet_no}, {form_no}, {user_no}, "P", "Y", "{form_reason}");'
 
                             base = db.cursor()
                             base.execute(sql)

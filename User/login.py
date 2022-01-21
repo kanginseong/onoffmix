@@ -64,8 +64,10 @@ class Login(Resource):
 
                 return jsonify(
                     token = "Bearer " + create_access_token( 
-                        identity = user,
-						)
+                    identity = user,
+                    expires_delta = False
+					),
+                    login = True
                 )
         else:
             return {'login' : False}

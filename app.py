@@ -2,6 +2,7 @@ from distutils.debug import DEBUG
 from flask import Flask
 from flask_restx import Resource, Api
 from flask_jwt_extended import *
+from flask_cors import CORS, cross_origin
 
 from User.createUser import createUser
 from User.login import login
@@ -9,8 +10,9 @@ from User.login import login
 from Meet.seeMeet import seeMeet
 from Meet.updateView import updateView
 
-from Meet.inMeet import inMeet
-from Meet.createMeet import createMeet
+from Meet.inMeet import inMeet 
+from Meet.updateMeet import updateMeet
+from Meet.updateMeet import updateMeet
 
 from Manage.seeRegiList import seeRegiList
 from Manage.updateRegiList import updateRegiList
@@ -18,6 +20,7 @@ from Manage.deletePartList import deletePartList
 from Manage.seePartList import seePartList
 
 app = Flask(__name__) # Flask 앱 생성
+CORS(app)
 
 app.config.update(
     DEBUG = True,
@@ -35,7 +38,7 @@ api.add_namespace(seeMeet, '/seemeet')
 api.add_namespace(updateView, '/updateview')
 
 api.add_namespace(inMeet, '/inmeet')
-api.add_namespace(createMeet, '/createmeet')
+api.add_namespace(updateMeet, '/updatemeet')
 
 api.add_namespace(seeRegiList, '/seeregilist')
 api.add_namespace(updateRegiList, '/updateregilist')

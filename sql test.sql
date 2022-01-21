@@ -170,3 +170,19 @@ select form_no from FormUser where meet_no = 35 and user_static="M" group by for
 select fu.meet_no, fu.form_no, fu.formuser_state, fu.form_reason, u.user_name from FormUser as fu join User as u on fu.user_no = u.user_no where form_no = 16 and user_static= "P";
 
 select * from FormUser as fu join Form as f on fu.form_no = f.form_no where fu.form_no = 16;
+
+select m.* from FormUser as fu join Meet as m on fu.meet_no = m.meet_no where fu.user_no = 2 and fu.user_static="P";
+
+
+select meet_no, meet_title, meet_created, meet_view
+                     from Meet as m join (select count(user_no) as c from FormUser 
+                     where meet_no = 35
+                     group by form_no) as form_mem 
+                where meet_no = 35;
+                
+     
+                
+                select form_no, count(user_no) as mem from FormUser as fu join (select f.* from Meet as m right join Form as f 
+                on m.meet_no = f.meet_no 
+                where m.meet_no = 35) as f where meet_no=35 group by form_no;
+                

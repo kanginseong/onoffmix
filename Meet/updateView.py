@@ -22,16 +22,11 @@ updateView = Namespace(
     description='updateView API'
 )
 
-@updateView.route('')
+@updateView.route('/<string:meet_no>')
 class UpdateView(Resource):
-
-    def put(self):
+    def get(self, meet_no):
 
         db = setDB()
-        
-        data = request.get_json()
-
-        meet_no = data['meet_no']
 
         sql = f'update Meet \
                 set meet_view = (select meet_view) + 1 \
