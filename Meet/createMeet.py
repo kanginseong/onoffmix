@@ -46,7 +46,7 @@ class CreateMeet(Resource):
 
         if check:
             return { "createMeet" : False}
-
+            
         else:
             # 모임이 만들어지면
             sql = f'insert into Meet(meet_title, meet_content, meet_view, user_no)\
@@ -64,6 +64,7 @@ class CreateMeet(Resource):
             base.execute(sql)
             meet = base.fetchall()
             base.close()
+            
             meet = meet[0]['meet_no']
             
             group = data['group']

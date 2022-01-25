@@ -33,7 +33,6 @@ class SeePartList(Resource):
 
         db = setDB()
 
-        # 그 방에 방장인지 확인을 해야한다.
         sql = f'select m.* from FormUser as fu join Meet as m on fu.meet_no = m.meet_no where fu.user_no = {user_no} and fu.user_static="P";'
 
         base = db.cursor()

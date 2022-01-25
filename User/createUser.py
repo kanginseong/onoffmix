@@ -42,9 +42,10 @@ class CreateUser(Resource):
                 where user_name = "{user_name}";'
         base.execute(sql)
         name = base.fetchall()
+        base.close()
+
         if name:
-            base.close()
-            return {'name': False}
+            return {'createUser': False}
         else:
             # mail 체크
             base = db.cursor()

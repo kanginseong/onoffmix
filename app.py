@@ -12,7 +12,7 @@ from Meet.updateView import updateView
 
 from Meet.inMeet import inMeet 
 from Meet.updateMeet import updateMeet
-from Meet.updateMeet import updateMeet
+from Meet.createMeet import createMeet
 
 from Manage.seeRegiList import seeRegiList
 from Manage.updateRegiList import updateRegiList
@@ -38,6 +38,7 @@ api.add_namespace(seeMeet, '/seemeet')
 api.add_namespace(updateView, '/updateview')
 
 api.add_namespace(inMeet, '/inmeet')
+api.add_namespace(createMeet, '/createmeet')
 api.add_namespace(updateMeet, '/updatemeet')
 
 api.add_namespace(seeRegiList, '/seeregilist')
