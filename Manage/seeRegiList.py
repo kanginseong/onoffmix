@@ -90,7 +90,7 @@ class SeeRegiList(Resource):
         db = setDB()
 
         # 모임에 그룹들 확인
-        sql = f'select u.user_no, u.user_name, fu.form_reason, fu.user_static \
+        sql = f'select u.user_no, u.user_name, fu.form_reason, fu.formuser_state \
                 from FormUser as fu join User as u on fu.user_no = u.user_no \
                 where form_no = "{form_no}" and user_static= "P";'
 

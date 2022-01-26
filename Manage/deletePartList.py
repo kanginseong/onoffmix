@@ -35,9 +35,8 @@ class DeletePartList(Resource):
         data = request.get_json()
         
         meet_no = data['meet_no']
-        form_no = data['form_no']
         
-        sql = f'select formuser_no from FormUser where meet_no = {meet_no} and form_no = {form_no} and user_no = {user_no}'
+        sql = f'select formuser_no from FormUser where meet_no = {meet_no} and user_no = {user_no}'
 
         base = db.cursor()
         base.execute(sql)

@@ -38,7 +38,7 @@ class UpdateRegiList(Resource):
 
         meet_no = data['meet_no']
         form_no = data['form_no']
-        user2_no = data['user_no'] # 바꿀 사용자
+        user2_no = data['user2_no'] # 바꿀 사용자
         formuser_state = data['formuser_state']
 
         sql = f'select user_static from FormUser \
@@ -51,13 +51,17 @@ class UpdateRegiList(Resource):
         data = base.fetchall()
         base.close()
 
-        sql = f'update FormUser \
-                set formuser_state = "{formuser_state} "\
-                where user_no = {user2_no};'
+        if data[0]['user_static'] == "M":
+            print(data)
+            sql = f'update FormUser \
+                    set formuser_state = "{formuser_state}"\
+                    where user_no = {user2_no};'
 
-        base = db.cursor()
-        base.execute(sql)
-        db.commit()
-        base.close()
+            base = db.cursor()
+            base.execute(sql)
+            db.commit()
+            base.close()
 
-        return { "updatePartList" : True }
+            return { "updatePartList" : True }
+        else:
+            return { "updatePartList" : True }
